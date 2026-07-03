@@ -515,7 +515,7 @@ export const useMarmitaStore = create<MarmitaStore>((set, get) => ({
 
     const state = get();
 
-    const totalAtual = state.marmitas.reduce((acc, m) => acc + m.precoTotal, 0);
+    const totalAtual = state.marmitas.reduce((gastoAgora, m) => gastoAgora + m.precoTotal, 0);
 
     const orcamento = state.orcamento;
 
@@ -673,11 +673,16 @@ export const useMarmitaStore = create<MarmitaStore>((set, get) => ({
   },
 
   copiarMarmita: (origem, destino) => {
-    const { marmitas } = get();
-
+    const { marmitas, orcamento } = get();
     const marmitaOrigem = marmitas.find((m) => m.diaSemana === origem);
-
     if (!marmitaOrigem) return;
+    const marmitaDestino = marmitas.find((m) => m.diaSemana === destino);
+    const totalAtual = marmitas.reduce((gastoAgora, m) => gastoAgora + m.precoTotal, 0);
+    const novoTotal = totalAtual - (marmitaDestino?.precoTotal || 0) + marmitaOrigem.precoTotal;
+
+    if (orcamento > 0 && novoTotal > orcamento) {
+      return alert('Orçamento estourado!');
+    }
 
     set({
       marmitas: [

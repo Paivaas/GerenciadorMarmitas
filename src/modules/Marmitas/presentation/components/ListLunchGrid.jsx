@@ -24,6 +24,11 @@ import {
 } from "@/components/ui/card"
 import { CircleX, Copy, Soup, Utensils } from 'lucide-react';
 import { Button } from "@/components/ui/button"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 
 export default function ListLunchGrid() {
@@ -43,15 +48,26 @@ export default function ListLunchGrid() {
                 <CardHeader>
                     <CardTitle>{dia}</CardTitle>
 
-                    {marmita && (
-                    <CardAction>
-                        <CircleX
-                        size={14}
-                        onClick={() => deletarMarmita(dia)}
-                        className="text-zinc-400 cursor-pointer"
-                        />
-                    </CardAction>
-                    )}
+                         {marmita && (
+
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                <CardAction>
+                                        <CircleX
+                                        size={14}
+                                        onClick={() => deletarMarmita(dia)}
+                                        className="text-zinc-400 cursor-pointer"
+                                        />
+                                    </CardAction>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Deletar</p>
+                                </TooltipContent>
+                            </Tooltip>
+                          
+                            )}
+
+                   
                 </CardHeader>
 
                 <CardContent className="space-y-2 h-38">
