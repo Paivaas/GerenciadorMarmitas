@@ -1,5 +1,6 @@
 import { ingredientes } from '@/modules/Marmitas/data/Ingredientes';
 import { create } from 'zustand';
+import Swal from 'sweetalert2';
 
 type DiaSemana = 'Segunda' | 'Terça' | 'Quarta' | 'Quinta' | 'Sexta';
 type Categoria = 'Carboidrato' | 'Proteina' | 'Acompanhamento';
@@ -492,7 +493,17 @@ export const useMarmitaStore = create<MarmitaStore>((set, get) => ({
       beterraba,
     } = get();
     if (!diaSemana) {
-      return alert('selecione um dia da semana');
+      return Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'info',
+        title: 'Selecione um dia.',
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          title: 'text-sm',
+        },
+      });
     }
     const validacao = marmitas.some((marmita) => marmita.diaSemana === diaSemana);
     if (validacao) {
@@ -520,10 +531,30 @@ export const useMarmitaStore = create<MarmitaStore>((set, get) => ({
     const orcamento = state.orcamento;
 
     if (orcamento > 0 && totalAtual + precoTotal > orcamento) {
-      return alert('Orçamento estourado!');
+      return Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'info',
+        title: 'Orçamento estourado!',
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          title: 'text-sm',
+        },
+      });
     }
 
-    alert(`Marmita de ${diaSemana} criada`);
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      title: `Marmita de ${diaSemana} criada`,
+      showConfirmButton: false,
+      timer: 1500,
+      customClass: {
+        title: 'text-sm',
+      },
+    });
 
     const caloriasTotais =
       carne.calorias +
@@ -568,6 +599,18 @@ export const useMarmitaStore = create<MarmitaStore>((set, get) => ({
     set((state) => ({
       marmitas: state.marmitas.filter((m) => m.diaSemana !== dia),
     }));
+
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      title: 'Sua marmita foi deletada!',
+      showConfirmButton: false,
+      timer: 1500,
+      customClass: {
+        title: 'text-sm',
+      },
+    });
   },
 
   resetarMarmita: () => {
@@ -681,7 +724,17 @@ export const useMarmitaStore = create<MarmitaStore>((set, get) => ({
     const novoTotal = totalAtual - (marmitaDestino?.precoTotal || 0) + marmitaOrigem.precoTotal;
 
     if (orcamento > 0 && novoTotal > orcamento) {
-      return alert('Orçamento estourado!');
+      return Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'info',
+        title: 'Orçamento estourado!',
+        showConfirmButton: false,
+        timer: 1500,
+        customClass: {
+          title: 'text-sm',
+        },
+      });
     }
 
     set({
@@ -692,6 +745,18 @@ export const useMarmitaStore = create<MarmitaStore>((set, get) => ({
           diaSemana: destino,
         },
       ],
+    });
+
+    Swal.fire({
+      toast: true,
+      position: 'top-end',
+      icon: 'success',
+      title: 'Sua marmita foi copiada!',
+      showConfirmButton: false,
+      timer: 1500,
+      customClass: {
+        title: 'text-sm',
+      },
     });
   },
 }));
